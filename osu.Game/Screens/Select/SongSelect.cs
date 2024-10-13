@@ -44,6 +44,7 @@ using osu.Game.Utils;
 using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
+using osu.Game.BellaFiora;
 
 namespace osu.Game.Screens.Select
 {
@@ -955,7 +956,12 @@ namespace osu.Game.Screens.Select
 
         private void carouselBeatmapsTrulyLoaded()
         {
-            Carousel.SelectBeatmap(453358);
+            Triggers.SongSelect.CarouselBeatmapsTrulyLoaded(this);
+        }
+
+        public void StartMap(int OnlineID)
+        {
+            Carousel.SelectBeatmap(OnlineID);
             FinaliseSelection();
         }
 
