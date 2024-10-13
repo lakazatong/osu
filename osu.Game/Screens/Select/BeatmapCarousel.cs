@@ -52,6 +52,11 @@ namespace osu.Game.Screens.Select
         public Action? BeatmapSetsChanged;
 
         /// <summary>
+        /// Triggered when <see cref="BeatmapSets"/> finish loading.
+        /// </summary>
+        public Action? BeatmapSetsLoadedAction;
+
+        /// <summary>
         /// Triggered after filter conditions have finished being applied to the model hierarchy.
         /// </summary>
         public Action? FilterApplied;
@@ -192,6 +197,7 @@ namespace osu.Game.Screens.Select
             {
                 invalidateAfterChange();
                 BeatmapSetsLoaded = true;
+                BeatmapSetsLoadedAction?.Invoke();
             });
         }
 
@@ -366,6 +372,7 @@ namespace osu.Game.Screens.Select
             {
                 BeatmapSetsLoaded = true;
                 invalidateAfterChange();
+                BeatmapSetsLoadedAction?.Invoke();
             }
 
             setsRequiringRemoval.Clear();
