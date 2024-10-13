@@ -30,6 +30,7 @@ using osu.Game.Screens.Select.Carousel;
 using osuTK;
 using osuTK.Input;
 using Realms;
+using osu.Game.BellaFiora;
 
 namespace osu.Game.Screens.Select
 {
@@ -466,6 +467,27 @@ namespace osu.Game.Screens.Select
                 if (removedDrawable != null)
                     expirePanelImmediately(removedDrawable);
             }
+        }
+
+        public bool SelectBeatmap(int OnlineID)
+        {
+            // ensure that any pending events from BeatmapManager have been run before attempting a selection.
+            Scheduler.Update();
+
+            foreach (CarouselBeatmapSet set in beatmapSets)
+            {
+                var item = set.Beatmaps.FirstOrDefault(p => p.BeatmapInfo.OnlineID == OnlineID);
+
+                if (item == null)
+                    // The beatmap that needs to be selected doesn't exist in this set
+                    continue;
+
+                select(item);
+
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
