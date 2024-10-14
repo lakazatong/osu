@@ -21,6 +21,7 @@ using osu.Framework.Screens;
 using osu.Framework.Threading;
 using osu.Game.Audio;
 using osu.Game.Beatmaps;
+using osu.Game.BellaFiora;
 using osu.Game.Configuration;
 using osu.Game.Database;
 using osu.Game.Extensions;
@@ -273,6 +274,19 @@ namespace osu.Game.Screens.Play
             if (cancellationToken.IsCancellationRequested)
                 return;
 
+            var hotkeyExitOverlay = new HotkeyExitOverlay
+            {
+                Action = () =>
+                {
+                    if (!this.IsCurrentScreen()) return;
+
+                    if (PerformExit(false))
+                        // The hotkey overlay dims the screen.
+                        // If the operation succeeds, we want to make sure we stay dimmed to keep continuity.
+                        fadeOut(true);
+                },
+            };
+
             rulesetSkinProvider.AddRange(new Drawable[]
             {
                 failAnimationContainer = new FailAnimationContainer(DrawableRuleset)
@@ -291,18 +305,7 @@ namespace osu.Game.Screens.Play
                     OnRetry = Configuration.AllowUserInteraction ? () => Restart() : null,
                     OnQuit = () => PerformExit(true),
                 },
-                new HotkeyExitOverlay
-                {
-                    Action = () =>
-                    {
-                        if (!this.IsCurrentScreen()) return;
-
-                        if (PerformExit(false))
-                            // The hotkey overlay dims the screen.
-                            // If the operation succeeds, we want to make sure we stay dimmed to keep continuity.
-                            fadeOut(true);
-                    },
-                },
+                hotkeyExitOverlay,
             });
 
             if (cancellationToken.IsCancellationRequested)
@@ -399,6 +402,8 @@ namespace osu.Game.Screens.Play
             IsBreakTime.BindValueChanged(onBreakTimeChanged, true);
 
             loadLeaderboard();
+
+            Triggers.PlayerLoaded(this, hotkeyExitOverlay);
         }
 
         protected virtual GameplayClockContainer CreateGameplayClockContainer(WorkingBeatmap beatmap, double gameplayStart) => new MasterGameplayClockContainer(beatmap, gameplayStart);
@@ -1012,6 +1017,7 @@ namespace osu.Game.Screens.Play
 
         protected PauseOverlay PauseOverlay { get; private set; }
 
+#pragma warning disable 0649
         private double? lastPauseActionTime;
 
         protected bool PauseCooldownActive =>
