@@ -180,12 +180,7 @@ namespace osu.Game.BellaFiora
                 Logger.Log("Error in handleRequest: " + ex.Message, LoggingTarget.Information, LogLevel.Error);
             }
 
-            string errorResponse = "<html><body><h1>Invalid request</h1></body></html>";
-            byte[] buffer = Encoding.UTF8.GetBytes(errorResponse);
-            context.Response.ContentLength64 = buffer.Length;
-            context.Response.ContentType = "text/html";
-            context.Response.OutputStream.Write(buffer, 0, buffer.Length);
-            context.Response.OutputStream.Close();
+            respond("<html><body><h1>Invalid request</h1></body></html>");
             beginListening();
         }
     }
