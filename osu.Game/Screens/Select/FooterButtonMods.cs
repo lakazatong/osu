@@ -21,6 +21,7 @@ using osuTK.Graphics;
 using osu.Game.Input.Bindings;
 using osu.Game.Localisation;
 using osu.Game.Utils;
+using osu.Game.BellaFiora;
 
 namespace osu.Game.Screens.Select
 {
@@ -117,6 +118,7 @@ namespace osu.Game.Screens.Select
                     modSettingChangeTracker.SettingChanged += _ => updateMultiplierText();
                 }
             }, true);
+            Triggers.FooterButtonModsLoadComplete(this);
         }
 
         private void updateMultiplierText() => Schedule(() =>
