@@ -45,6 +45,7 @@ using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
 using osu.Game.BellaFiora;
+using osu.Game.Screens.Select.Carousel;
 
 namespace osu.Game.Screens.Select
 {
@@ -959,10 +960,23 @@ namespace osu.Game.Screens.Select
             Triggers.CarouselBeatmapsTrulyLoaded(this);
         }
 
-        public void StartMap(int OnlineID)
+        public bool StartMap(int OnlineID)
         {
-            Carousel.SelectBeatmap(OnlineID);
+            bool started = Carousel.SelectBeatmap(OnlineID);
+            if (started) FinaliseSelection();
+            return started;
+        }
+
+        public CarouselBeatmap? GetCarouselBeatmap(int OnlineID)
+        {
+            return Carousel.GetItem(OnlineID);
+        }
+
+        public bool StartMap(CarouselBeatmap carouselBeatmap)
+        {
+            Carousel.SelectBeatmap(carouselBeatmap);
             FinaliseSelection();
+            return true;
         }
 
         private void updateVisibleBeatmapCount()
