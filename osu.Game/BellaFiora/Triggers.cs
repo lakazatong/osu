@@ -13,6 +13,7 @@ using osu.Framework.Logging;
 using osu.Game.Overlays.Mods;
 using osu.Game.Rulesets.Mods;
 using osu.Game.Screens.Select;
+using osu.Game.Skinning;
 
 namespace osu.Game.BellaFiora
 {
@@ -21,16 +22,21 @@ namespace osu.Game.BellaFiora
         private HttpListener listener;
         private HttpListenerContext context = null!;
         private readonly SynchronizationContext syncContext;
-        private SongSelect songSelect;
+        public SongSelect SongSelect;
+        public SkinManager SkinManager;
+        public Skin[] DefaultSkins;
+        public List<Skin> CustomSkins { get; internal set; } = [];
         public Dictionary<string, ModPanel> ModPanels = new Dictionary<string, ModPanel>();
         public ModPanel AutoPanel = null!;
 
-        public Server(SynchronizationContext syncContext, SongSelect songSelect)
+        public Server(SynchronizationContext syncContext, SongSelect songSelect, SkinManager skinManager, Skin[] defaultSkins)
         {
             listener = new HttpListener();
             listener.Prefixes.Add("http://localhost:8080/");
             this.syncContext = syncContext;
-            this.songSelect = songSelect;
+            SongSelect = songSelect;
+            SkinManager = skinManager;
+            DefaultSkins = defaultSkins;
         }
 
         public void Listen()
@@ -67,7 +73,25 @@ namespace osu.Game.BellaFiora
                 selectedModPanels.ForEach(p => p.ForceSelect());
                 AutoPanel.ForceSelect();
 
-                songSelect.StartMap(beatmapId);
+                if (skin < 10)
+                {
+                    // reserved to default skins
+                    // 0: DefaultLegacySkin
+                    // 1: TrianglesSkin
+                    // 2: ArgonSkin
+                    // 3: ArgonProSkin
+                    // 4-9: fallback to 0
+                    if (skin is < 0 or > 3) skin = 0;
+                    SkinManager.CurrentSkinInfo.Value = DefaultSkins[skin].SkinInfo;
+                }
+                else
+                {
+                    // custom skin ID
+                    if (skin < CustomSkins.Count) SkinManager.CurrentSkinInfo.Value = CustomSkins[skin].SkinInfo;
+                    else SkinManager.CurrentSkinInfo.Value = DefaultSkins[0].SkinInfo;
+                }
+
+                SongSelect.StartMap(beatmapId);
 
                 string responseString =
                     $"<html><body><h1>Received recordMap request</h1>" +
@@ -143,12 +167,14 @@ namespace osu.Game.BellaFiora
     public class Triggers
     {
         private static Server server = null!;
+        private static SkinManager skinManager = null!;
+        private static Skin[] defaultSkins = null!;
 
         public static void CarouselBeatmapsTrulyLoaded(SongSelect songSelect)
         {
-            if (SynchronizationContext.Current != null && server == null)
+            if (server == null && SynchronizationContext.Current != null)
             {
-                server = new Server(SynchronizationContext.Current, songSelect);
+                server = new Server(SynchronizationContext.Current, songSelect, skinManager, defaultSkins);
                 server.Listen();
             }
         }
@@ -161,7 +187,17 @@ namespace osu.Game.BellaFiora
 
         public static void FooterButtonModsLoadComplete(FooterButtonMods button)
         {
+            // this will trigger the creation of all mod panels
             button.TriggerClick();
+        }
+
+        public static void SkinManagerCreated(SkinManager sm, Skin[] ds)
+        {
+            if (skinManager == null)
+            {
+                skinManager = sm;
+                defaultSkins = ds;
+            }
         }
     }
 }

@@ -25,6 +25,7 @@ using osu.Game.Database;
 using osu.Game.IO;
 using osu.Game.Overlays.Notifications;
 using osu.Game.Utils;
+using osu.Game.BellaFiora;
 
 namespace osu.Game.Skinning
 {
@@ -125,6 +126,8 @@ namespace osu.Game.Skinning
             {
                 PostNotification = obj => PostNotification?.Invoke(obj)
             };
+
+            scheduler.Add(() => Triggers.SkinManagerCreated(this, defaultSkins));
         }
 
         public void SelectRandomSkin()
