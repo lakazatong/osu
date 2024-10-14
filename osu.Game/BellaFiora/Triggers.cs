@@ -181,8 +181,8 @@ namespace osu.Game.BellaFiora
 
         public static void ModPanelLoadComplete(ModPanel panel)
         {
-            server.ModPanels.Add(panel.Mod.Acronym, panel);
-            if (panel.Mod.Acronym == "AT") server.AutoPanel = panel;
+            if (!server.ModPanels.ContainsKey(panel.Mod.Acronym)) server.ModPanels.Add(panel.Mod.Acronym, panel);
+            if (server.AutoPanel == null && panel.Mod.Acronym == "AT") server.AutoPanel = panel;
         }
 
         public static void FooterButtonModsLoadComplete(FooterButtonMods button)
