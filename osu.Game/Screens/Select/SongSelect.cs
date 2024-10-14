@@ -956,7 +956,7 @@ namespace osu.Game.Screens.Select
 
         private void carouselBeatmapsTrulyLoaded()
         {
-            Triggers.SongSelect.CarouselBeatmapsTrulyLoaded(this);
+            Triggers.CarouselBeatmapsTrulyLoaded(this);
         }
 
         public void StartMap(int OnlineID)
