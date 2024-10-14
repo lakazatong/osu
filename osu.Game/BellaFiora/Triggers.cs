@@ -51,14 +51,11 @@ namespace osu.Game.BellaFiora
 
                 var selectedModPanels = new List<ModPanel>();
 
-                // Create a regex pattern that matches any acronym in the ModPanels dictionary
                 string pattern = string.Join("|", ModPanels.Keys.Select(k => Regex.Escape(k)));
                 Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
 
-                // Find all matches in the modsStr
                 var matches = regex.Matches(modsStr);
 
-                // Add matching ModPanels to the selected list
                 foreach (Match match in matches)
                 {
                     if (ModPanels.TryGetValue(match.Value, out var panel))
