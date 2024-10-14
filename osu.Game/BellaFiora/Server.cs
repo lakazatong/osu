@@ -14,6 +14,7 @@ using osu.Game.Overlays.Mods;
 using osu.Game.Rulesets.Mods;
 using osu.Game.Screens.Play;
 using osu.Game.Screens.Select;
+using osu.Game.Screens.Select.Carousel;
 using osu.Game.Skinning;
 
 namespace osu.Game.BellaFiora
@@ -29,8 +30,8 @@ namespace osu.Game.BellaFiora
         public List<Skin> CustomSkins { get; internal set; } = [];
         public Dictionary<string, ModPanel> ModPanels = new Dictionary<string, ModPanel>();
         public ModPanel AutoPanel = null!;
-        internal SoloPlayer Player;
-        internal HotkeyExitOverlay HotkeyExitOverlay;
+        public SoloPlayer? Player = null;
+        public HotkeyExitOverlay? HotkeyExitOverlay = null;
         public Server(SynchronizationContext syncContext, SongSelect songSelect, SkinManager skinManager, Skin[] defaultSkins)
         {
             listener = new HttpListener();
@@ -49,10 +50,31 @@ namespace osu.Game.BellaFiora
         {
             listener.BeginGetContext(new AsyncCallback(handleRequest), listener);
         }
+        private void respond(string msg)
+        {
+            byte[] buffer = Encoding.UTF8.GetBytes(msg);
+            context.Response.ContentLength64 = buffer.Length;
+            context.Response.ContentType = "text/html";
+            context.Response.OutputStream.Write(buffer, 0, buffer.Length);
+            context.Response.OutputStream.Close();
+        }
         private void startMap(int beatmapId, string modsStr, int skin)
         {
             syncContext.Post(_ =>
             {
+                CarouselBeatmap? carouselBeatmap = SongSelect.GetCarouselBeatmap(beatmapId);
+                if (carouselBeatmap == null)
+                {
+                    respond($"<html><body><h1>Received recordMap request</h1>" +
+                    $"<p>Beatmap ID: {beatmapId}</p>" +
+                    $"<p>Skin: {skin}</p>" +
+                    $"<p>Requested Mods:</p>" +
+                    $"<ul>{string.Join("", modsStr.Split('+').Select(acronym => $"<li>{acronym}</li>"))}</ul>" +
+                    $"<p>Do not have this beatmap</p>" +
+                    $"</body></html>");
+                    return;
+                }
+
                 ModPanels.Values.ForEach(p => p.ForceDeselect());
 
                 var selectedModPanels = new List<ModPanel>();
@@ -91,10 +113,9 @@ namespace osu.Game.BellaFiora
                     else SkinManager.CurrentSkinInfo.Value = DefaultSkins[0].SkinInfo;
                 }
 
-                SongSelect.StartMap(beatmapId);
+                bool started = SongSelect.StartMap(beatmapId);
 
-                string responseString =
-                    $"<html><body><h1>Received recordMap request</h1>" +
+                respond($"<html><body><h1>Received recordMap request</h1>" +
                     $"<p>Beatmap ID: {beatmapId}</p>" +
                     $"<p>Skin: {skin}</p>" +
                     $"<p>Requested Mods:</p>" +
@@ -103,20 +124,14 @@ namespace osu.Game.BellaFiora
                     $"<ul>{string.Join("", selectedModPanels.Select(p => $"<li>{p.Mod.Acronym}: {p.Mod.Name}</li>"))}</ul>" +
                     $"<p>All Mods:</p>" +
                     $"<ul>{string.Join("", ModPanels.Values.Select(p => $"<li>{p.Mod.Acronym}: {p.Mod.Name}</li>"))}</ul>" +
-                    $"</body></html>";
-
-                byte[] buffer = Encoding.UTF8.GetBytes(responseString);
-                context.Response.ContentLength64 = buffer.Length;
-                context.Response.ContentType = "text/html";
-                context.Response.OutputStream.Write(buffer, 0, buffer.Length);
-                context.Response.OutputStream.Close();
+                    $"</body></html>");
             }, null);
         }
         private void stopMap()
         {
             syncContext.Post(_ =>
             {
-                HotkeyExitOverlay.Action.Invoke();
+                HotkeyExitOverlay?.Action.Invoke();
                 context.Response.Close();
             }, null);
         }
