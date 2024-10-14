@@ -476,25 +476,31 @@ namespace osu.Game.Screens.Select
             }
         }
 
+        public CarouselBeatmap? GetItem(int OnlineID) =>
+            beatmapSets.SelectMany(set => set.Beatmaps)
+                       .FirstOrDefault(p => p.BeatmapInfo.OnlineID == OnlineID);
+
         public bool SelectBeatmap(int OnlineID)
         {
             // ensure that any pending events from BeatmapManager have been run before attempting a selection.
             Scheduler.Update();
 
-            foreach (CarouselBeatmapSet set in beatmapSets)
+            var item = GetItem(OnlineID);
+            if (item != null)
             {
-                var item = set.Beatmaps.FirstOrDefault(p => p.BeatmapInfo.OnlineID == OnlineID);
-
-                if (item == null)
-                    // The beatmap that needs to be selected doesn't exist in this set
-                    continue;
-
                 select(item);
-
                 return true;
             }
 
             return false;
+        }
+
+        public void SelectBeatmap(CarouselBeatmap item)
+        {
+            // ensure that any pending events from BeatmapManager have been run before attempting a selection.
+            Scheduler.Update();
+
+            select(item);
         }
 
         /// <summary>
