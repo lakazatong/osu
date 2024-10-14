@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Logging;
+using osu.Game.Configuration;
 using osu.Game.Overlays.Mods;
 using osu.Game.Rulesets.Mods;
 using osu.Game.Screens.Play;
@@ -28,11 +29,19 @@ namespace osu.Game.BellaFiora
         public SkinManager SkinManager;
         public Skin[] DefaultSkins;
         public List<Skin> CustomSkins { get; internal set; } = [];
+
         public Dictionary<string, ModPanel> ModPanels = new Dictionary<string, ModPanel>();
         public ModPanel AutoPanel = null!;
         public SoloPlayer? Player = null;
         public HotkeyExitOverlay? HotkeyExitOverlay = null;
-        public Server(SynchronizationContext syncContext, SongSelect songSelect, SkinManager skinManager, Skin[] defaultSkins)
+        public OsuConfigManager LocalConfig = null!;
+        public Server(
+            SynchronizationContext syncContext,
+            SongSelect songSelect,
+            SkinManager skinManager,
+            Skin[] defaultSkins,
+            OsuConfigManager localConfig
+        )
         {
             listener = new HttpListener();
             listener.Prefixes.Add("http://localhost:8080/");
@@ -40,6 +49,7 @@ namespace osu.Game.BellaFiora
             SongSelect = songSelect;
             SkinManager = skinManager;
             DefaultSkins = defaultSkins;
+            LocalConfig = localConfig;
         }
         public void Listen()
         {
@@ -109,7 +119,7 @@ namespace osu.Game.BellaFiora
                 else
                 {
                     // custom skin ID
-                    if (skin < CustomSkins.Count) SkinManager.CurrentSkinInfo.Value = CustomSkins[skin].SkinInfo;
+                    if (skin - 10 < CustomSkins.Count) SkinManager.CurrentSkinInfo.Value = CustomSkins[skin - 10].SkinInfo;
                     else SkinManager.CurrentSkinInfo.Value = DefaultSkins[0].SkinInfo;
                 }
 
@@ -135,6 +145,14 @@ namespace osu.Game.BellaFiora
                 context.Response.Close();
             }, null);
         }
+        private void saveConfig()
+        {
+            LocalConfig.Save();
+        }
+        // private void loadConfig(string config)
+        // {
+        //     LocalConfig.Load();
+        // }
         private bool handleStartMap(HttpListenerRequest request)
         {
             var QueryString = request.QueryString;
@@ -156,6 +174,16 @@ namespace osu.Game.BellaFiora
             stopMap();
             return true;
         }
+        private bool handleSaveConfig(HttpListenerRequest request)
+        {
+            saveConfig();
+            return true;
+        }
+        private bool handleLoadConfig(HttpListenerRequest request)
+        {
+            // loadConfig();
+            return true;
+        }
         private void handleRequest(IAsyncResult result)
         {
             context = listener.EndGetContext(result);
@@ -163,11 +191,13 @@ namespace osu.Game.BellaFiora
 
             try
             {
-                if (request.HttpMethod == "GET")
+                if (request.HttpMethod == "GET" && request.Url != null)
                 {
                     if (
-                        request.Url?.AbsolutePath == "/startMap" && handleStartMap(request)
-                    || request.Url?.AbsolutePath == "/stopMap" && handleStopMap(request)
+                        request.Url.AbsolutePath == "/startMap" && handleStartMap(request)
+                    || request.Url.AbsolutePath == "/stopMap" && handleStopMap(request)
+                    || request.Url.AbsolutePath == "/saveConfig" && handleSaveConfig(request)
+                    || request.Url.AbsolutePath == "/loadConfig" && handleLoadConfig(request)
                     )
                     {
                         beginListening();
