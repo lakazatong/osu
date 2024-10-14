@@ -169,6 +169,7 @@ namespace osu.Game.BellaFiora
         private static Server server = null!;
         private static SkinManager skinManager = null!;
         private static Skin[] defaultSkins = null!;
+        private static bool FooterButtonModsLoadCompleteTrigged = false;
 
         public static void CarouselBeatmapsTrulyLoaded(SongSelect songSelect)
         {
@@ -187,8 +188,12 @@ namespace osu.Game.BellaFiora
 
         public static void FooterButtonModsLoadComplete(FooterButtonMods button)
         {
-            // this will trigger the creation of all mod panels
-            button.TriggerClick();
+            if (!FooterButtonModsLoadCompleteTrigged)
+            {
+                // this will trigger the creation of all mod panels
+                button.TriggerClick();
+                FooterButtonModsLoadCompleteTrigged = true;
+            }
         }
 
         public static void SkinManagerCreated(SkinManager sm, Skin[] ds)
