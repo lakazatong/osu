@@ -416,7 +416,6 @@ namespace osu.Game
 
             Ruleset.BindValueChanged(onRulesetChanged);
             Beatmap.BindValueChanged(onBeatmapChanged);
-            Triggers.OsuGameBaseLoaded(LocalConfig);
         }
 
         private void updateLanguage() => CurrentLanguage.Value = LanguageExtensions.GetLanguageFor(frameworkLocale.Value, localisationParameters.Value);
@@ -495,6 +494,8 @@ namespace osu.Game
             LocalConfig ??= UseDevelopmentServer
                 ? new DevelopmentOsuConfigManager(Storage)
                 : new OsuConfigManager(Storage);
+
+            Triggers.LocalConfigCreated(LocalConfig);
 
             host.ExceptionThrown += onExceptionThrown;
         }
