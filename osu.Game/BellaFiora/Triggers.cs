@@ -13,7 +13,7 @@ namespace osu.Game.BellaFiora
 {
     public class Triggers
     {
-        private static BellaFioraServer server = null!;
+        private static Server server = null!;
         private static SkinManager skinManager = null!;
         private static Skin[] defaultSkins = null!;
         private static bool footerButtonModsLoadCompleteTrigged = false;
@@ -23,7 +23,7 @@ namespace osu.Game.BellaFiora
         {
             if (server == null && SynchronizationContext.Current != null)
             {
-                server = new BellaFioraServer(SynchronizationContext.Current, songSelect, skinManager, defaultSkins, osuConfigManager, frameworkConfigManager);
+                server = new Server(SynchronizationContext.Current, songSelect, skinManager, defaultSkins, osuConfigManager, frameworkConfigManager);
                 server.Start();
             }
         }

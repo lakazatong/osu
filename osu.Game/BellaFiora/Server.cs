@@ -13,7 +13,7 @@ using osu.Game.Skinning;
 
 namespace osu.Game.BellaFiora
 {
-    public class BellaFioraServer : BaseServer
+    public class Server : BaseServer
     {
         public readonly SynchronizationContext UpdateThread;
         public SongSelect SongSelect;
@@ -27,7 +27,7 @@ namespace osu.Game.BellaFiora
         public HotkeyExitOverlay? HotkeyExitOverlay = null;
         public OsuConfigManager OsuConfigManager = null!;
         public FrameworkConfigManager FrameworkConfigManager = null!;
-        public BellaFioraServer(
+        public Server(
             SynchronizationContext syncContext,
             SongSelect songSelect,
             SkinManager skinManager,

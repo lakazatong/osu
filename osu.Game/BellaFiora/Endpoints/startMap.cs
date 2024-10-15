@@ -13,9 +13,9 @@ using osu.Game.Screens.Select.Carousel;
 
 namespace osu.Game.BellaFiora.Endpoints
 {
-    public class startMapEndpoint : Endpoint<BellaFioraServer>
+    public class startMapEndpoint : Endpoint<Server>
     {
-        public startMapEndpoint(BellaFioraServer server) : base(server) { }
+        public startMapEndpoint(Server server) : base(server) { }
         public override Func<HttpListenerRequest, bool> Handler => request =>
         {
             var QueryString = request.QueryString;

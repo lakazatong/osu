@@ -6,9 +6,9 @@ using osu.Game.BellaFiora.Utils;
 
 namespace osu.Game.BellaFiora.Endpoints
 {
-    public class stopMapEndpoint : Endpoint<BellaFioraServer>
+    public class stopMapEndpoint : Endpoint<Server>
     {
-        public stopMapEndpoint(BellaFioraServer server) : base(server) { }
+        public stopMapEndpoint(Server server) : base(server) { }
         public override Func<HttpListenerRequest, bool> Handler => request =>
         {
             callback();
