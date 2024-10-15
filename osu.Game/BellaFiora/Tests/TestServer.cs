@@ -4,7 +4,7 @@ using osu.Game.BellaFiora.Utils;
 
 namespace osu.Game.BellaFiora.Tests
 {
-    public class TestServer : Server
+    public class TestServer : BaseServer
     {
         public TestServer() : base()
         {
