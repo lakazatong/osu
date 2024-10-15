@@ -7,7 +7,7 @@ using System.Text;
 
 namespace osu.Game.BellaFiora.Utils
 {
-    public class BaseServer
+    public class Server
     {
         private HttpListener listener;
         private HttpListenerContext context = null!;
@@ -17,7 +17,7 @@ namespace osu.Game.BellaFiora.Utils
         private Dictionary<string, Func<HttpListenerRequest, bool>> PUTHandlers = new Dictionary<string, Func<HttpListenerRequest, bool>>();
 #pragma warning restore IDE1006
         private Dictionary<string, Dictionary<string, Func<HttpListenerRequest, bool>>> getHandlers = new Dictionary<string, Dictionary<string, Func<HttpListenerRequest, bool>>>();
-        public BaseServer()
+        public Server()
         {
             listener = new HttpListener();
             listener.Prefixes.Add("http://localhost:8080/");

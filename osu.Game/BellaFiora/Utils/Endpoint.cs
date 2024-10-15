@@ -6,7 +6,7 @@ using System.Net;
 namespace osu.Game.BellaFiora.Utils
 {
     public abstract class Endpoint<T>
-        where T : BaseServer
+        where T : Server
     {
         protected virtual T Server { get; private set; }
         public Endpoint(T server)

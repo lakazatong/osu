@@ -13,7 +13,7 @@ using osu.Game.Skinning;
 
 namespace osu.Game.BellaFiora
 {
-    public class BellaFioraServer : BaseServer
+    public class BellaFioraServer : Server
     {
         public readonly SynchronizationContext UpdateThread;
         public SongSelect SongSelect;
