@@ -19,6 +19,7 @@ using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osu.Framework.Screens;
 using osu.Game.Beatmaps;
+using osu.Game.BellaFiora;
 using osu.Game.Configuration;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Containers;
@@ -242,7 +243,7 @@ namespace osu.Game.Screens.Menu
                     Beatmap.Value.PrepareTrackForPreview(false);
                     track.Restart();
                 }
-                loadSoloSongSelect();
+                if (Globals.SKIP_MAIN_MENU) loadSoloSongSelect();
             }
 
             if (storage is OsuStorage osuStorage && osuStorage.Error != OsuStorageError.None)

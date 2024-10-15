@@ -1046,22 +1046,22 @@ namespace osu.Game.Screens.Play
 
         public bool Pause()
         {
-            return false;
-            // if (!pausingSupportedByCurrentState) return false;
+            if (!Globals.CAN_PAUSE) return false;
+            if (!pausingSupportedByCurrentState) return false;
 
-            // if (!IsResuming && PauseCooldownActive)
-            //     return false;
+            if (!IsResuming && PauseCooldownActive)
+                return false;
 
-            // if (IsResuming)
-            // {
-            //     DrawableRuleset.CancelResume();
-            //     IsResuming = false;
-            // }
+            if (IsResuming)
+            {
+                DrawableRuleset.CancelResume();
+                IsResuming = false;
+            }
 
-            // GameplayClockContainer.Stop();
-            // PauseOverlay.Show();
-            // lastPauseActionTime = GameplayClockContainer.CurrentTime;
-            // return true;
+            GameplayClockContainer.Stop();
+            PauseOverlay.Show();
+            lastPauseActionTime = GameplayClockContainer.CurrentTime;
+            return true;
         }
 
         public void Resume()
