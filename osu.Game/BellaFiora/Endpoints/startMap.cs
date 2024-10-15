@@ -92,12 +92,6 @@ namespace osu.Game.BellaFiora.Endpoints
 
                 bool started = Server.SongSelect.StartMap(beatmapId);
 
-                var FormatPanel = (object o) =>
-                {
-                    var p = (ModPanel)o;
-                    return $"{p.Mod.Acronym}: {p.Mod.Name}";
-                };
-
                 Respond(
                     "h1", "Received recordMap request",
                     "p", $"Started: {started}",
@@ -110,11 +104,11 @@ namespace osu.Game.BellaFiora.Endpoints
                     "p", "Selected Mods:",
                     "ul",
                         selectedModPanels,
-                        FormatPanel,
+                        Formatters.FormatPanel,
                     "p", "All Mods:",
                     "ul",
                         Server.ModPanels.Values,
-                        FormatPanel
+                        Formatters.FormatPanel
                 );
 
             }, null);
