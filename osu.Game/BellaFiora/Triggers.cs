@@ -22,7 +22,7 @@ namespace osu.Game.BellaFiora
             if (server == null && SynchronizationContext.Current != null)
             {
                 server = new BellaFioraServer(SynchronizationContext.Current, songSelect, skinManager, defaultSkins, localConfig);
-                server.Listen();
+                server.Start();
             }
         }
         public static void ModPanelLoadComplete(ModPanel panel)

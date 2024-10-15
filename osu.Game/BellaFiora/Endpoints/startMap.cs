@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using osu.Framework.Extensions.IEnumerableExtensions;
+using osu.Game.BellaFiora.Utils;
 using osu.Game.Overlays.Mods;
 using osu.Game.Rulesets.Mods;
 using osu.Game.Screens.Select.Carousel;
@@ -15,8 +16,7 @@ namespace osu.Game.BellaFiora.Endpoints
     public class startMapEndpoint : Endpoint<BellaFioraServer>
     {
         public startMapEndpoint(BellaFioraServer server) : base(server) { }
-        public override Func<HttpListenerRequest, bool> GetHandler() => handler;
-        private bool handler(HttpListenerRequest request)
+        public override Func<HttpListenerRequest, bool> Handler => request =>
         {
             var QueryString = request.QueryString;
             string? beatmapIdStr = QueryString["beatmapId"];
@@ -31,7 +31,7 @@ namespace osu.Game.BellaFiora.Endpoints
                 return true;
             }
             return false;
-        }
+        };
         private void callback(int beatmapId, string modsStr, int skin)
         {
             Server.UpdateThread.Post(_ =>
@@ -46,7 +46,7 @@ namespace osu.Game.BellaFiora.Endpoints
                         "p", "Requested Mods:",
                         "ul",
                             modsStr.Split('+'),
-                            (Func<string, string>)(e => e),
+                            (Func<object, string?>)(e => e.ToString()),
                         "p", "Do not have this beatmap"
                     );
                     return;
@@ -92,6 +92,12 @@ namespace osu.Game.BellaFiora.Endpoints
 
                 bool started = Server.SongSelect.StartMap(beatmapId);
 
+                var FormatPanel = (object o) =>
+                {
+                    var p = (ModPanel)o;
+                    return $"{p.Mod.Acronym}: {p.Mod.Name}";
+                };
+
                 Respond(
                     "h1", "Received recordMap request",
                     "p", $"Beatmap ID: {beatmapId}",
@@ -99,15 +105,15 @@ namespace osu.Game.BellaFiora.Endpoints
                     "p", "Requested Mods:",
                     "ul",
                         modsStr.Split('+'),
-                        (Func<string, string>)(e => e),
+                        Formatters.UnitFormatter,
                     "p", "Selected Mods:",
                     "ul",
                         selectedModPanels,
-                        (Func<ModPanel, string>)(p => $"{p.Mod.Acronym}: {p.Mod.Name}"),
+                        FormatPanel,
                     "p", "All Mods:",
                     "ul",
                         Server.ModPanels.Values,
-                        (Func<ModPanel, string>)(p => $"{p.Mod.Acronym}: {p.Mod.Name}")
+                        FormatPanel
                 );
 
             }, null);

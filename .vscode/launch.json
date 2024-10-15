@@ -7,9 +7,9 @@
             "request": "launch",
             "program": "dotnet",
             "args": [
-                "${workspaceRoot}/osu.Game.BellaFiora.Tests/bin/Debug/net8.0/osu.Game.BellaFiora.Tests.dll"
+                "${workspaceFolder}/osu.Game/BellaFiora/Tests/bin/Debug/net8.0/osu.Game.BellaFiora.Tests.dll"
             ],
-            "cwd": "${workspaceRoot}",
+            "cwd": "${workspaceFolder}",
             "preLaunchTask": "Build BellaFiora (Tests, Debug)",
             "console": "internalConsole"
         },

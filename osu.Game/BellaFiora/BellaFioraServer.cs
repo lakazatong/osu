@@ -38,10 +38,10 @@ namespace osu.Game.BellaFiora
             SkinManager = skinManager;
             DefaultSkins = defaultSkins;
             LocalConfig = localConfig;
-            AddGET("/loadConfig", new loadConfigEndpoint(this).GetHandler());
-            AddGET("/saveConfig", new saveConfigEndpoint(this).GetHandler());
-            AddGET("/startMap", new startMapEndpoint(this).GetHandler());
-            AddGET("/stopMap", new stopMapEndpoint(this).GetHandler());
+            AddGET("/loadConfig", new loadConfigEndpoint(this).Handler);
+            AddGET("/saveConfig", new saveConfigEndpoint(this).Handler);
+            AddGET("/startMap", new startMapEndpoint(this).Handler);
+            AddGET("/stopMap", new stopMapEndpoint(this).Handler);
         }
     }
 }

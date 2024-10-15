@@ -2,18 +2,18 @@
 
 using System;
 using System.Net;
+using osu.Game.BellaFiora.Utils;
 
 namespace osu.Game.BellaFiora.Endpoints
 {
     public class loadConfigEndpoint : Endpoint<BellaFioraServer>
     {
         public loadConfigEndpoint(BellaFioraServer server) : base(server) { }
-        public override Func<HttpListenerRequest, bool> GetHandler() => handler;
-        private bool handler(HttpListenerRequest request)
+        public override Func<HttpListenerRequest, bool> Handler => request =>
         {
             callback("");
             return true;
-        }
+        };
         private void callback(string config)
         {
             Server.UpdateThread.Post(_ =>
@@ -25,7 +25,7 @@ namespace osu.Game.BellaFiora.Endpoints
                     "p", $"Config: {config}",
                     "ul",
                         config.Split("\n"),
-                        (Func<string, string>)(e => e)
+                        Formatters.UnitFormatter
                 );
             }, null);
         }

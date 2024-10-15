@@ -9,12 +9,11 @@ namespace osu.Game.BellaFiora.Tests
     public class testEndpoint : Endpoint<TestServer>
     {
         public testEndpoint(TestServer server) : base(server) { }
-        public override Func<HttpListenerRequest, bool> GetHandler() => handler;
-        private bool handler(HttpListenerRequest request)
+        public override Func<HttpListenerRequest, bool> Handler => request =>
         {
             callback();
             return true;
-        }
+        };
         private void callback()
         {
             Respond(
@@ -24,7 +23,7 @@ namespace osu.Game.BellaFiora.Tests
                 "p", "Requested Mods:",
                 "ul",
                     "RX+DT+HD".Split('+'),
-                    (Func<string, string>)(e => e),
+                    Formatters.UnitFormatter,
                 "p", "Do not have this beatmap"
             );
         }

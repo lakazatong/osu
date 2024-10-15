@@ -4,14 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
-using osu.Framework.Logging;
 
 namespace osu.Game.BellaFiora.Utils
 {
     public class BaseServer
     {
-        protected HttpListener Listener;
-        protected HttpListenerContext Context = null!;
+        private HttpListener listener;
+        private HttpListenerContext context = null!;
 #pragma warning disable IDE1006
         private Dictionary<string, Func<HttpListenerRequest, bool>> GETHandlers = new Dictionary<string, Func<HttpListenerRequest, bool>>();
         private Dictionary<string, Func<HttpListenerRequest, bool>> POSTHandlers = new Dictionary<string, Func<HttpListenerRequest, bool>>();
@@ -20,21 +19,32 @@ namespace osu.Game.BellaFiora.Utils
         private Dictionary<string, Dictionary<string, Func<HttpListenerRequest, bool>>> getHandlers = new Dictionary<string, Dictionary<string, Func<HttpListenerRequest, bool>>>();
         public BaseServer()
         {
-            Listener = new HttpListener();
-            Listener.Prefixes.Add("http://localhost:8080/");
+            listener = new HttpListener();
+            listener.Prefixes.Add("http://localhost:8080/");
             getHandlers.Add("GET", GETHandlers);
             getHandlers.Add("POST", POSTHandlers);
             getHandlers.Add("PUT", PUTHandlers);
         }
-        public void Listen()
+        public void Start()
         {
-            Listener.Start();
-            beginListening();
+            listener.Start();
+            receive();
+            Console.WriteLine("Server started");
+        }
+        private void receive()
+        {
+            listener.BeginGetContext(new AsyncCallback(handleRequest), listener);
+        }
+        public void Stop()
+        {
+            listener.Stop();
+            listener.Close();
+            Console.WriteLine("Server stopped");
         }
         protected void AddGET(string path, Func<HttpListenerRequest, bool> handler) => GETHandlers[path] = handler;
         protected void AddPOST(string path, Func<HttpListenerRequest, bool> handler) => POSTHandlers[path] = handler;
         protected void AddPUT(string path, Func<HttpListenerRequest, bool> handler) => PUTHandlers[path] = handler;
-        public byte[] BuildHTML(params object[] args)
+        public string BuildHTML(params object[] args)
         {
             StringBuilder htmlBuilder = new StringBuilder();
             htmlBuilder.Append("<!DOCTYPE html><html><body>");
@@ -61,9 +71,9 @@ namespace osu.Game.BellaFiora.Utils
                         case "ul":
                             i++;
                             IEnumerable<object> items = (IEnumerable<object>)args[i];
-                            dynamic formatItem = (Func<dynamic, string>)args[i + 1];
+                            var formatItem = (Func<object, string?>)args[i + 1];
                             htmlBuilder.Append("<ul>");
-                            foreach (object item in items) htmlBuilder.AppendFormat($"<li>{formatItem(item)}</li>");
+                            foreach (object item in items) htmlBuilder.AppendFormat($"<li>{formatItem(item) ?? string.Empty}</li>");
                             htmlBuilder.Append("</ul>");
                             i++;
                             break;
@@ -76,45 +86,51 @@ namespace osu.Game.BellaFiora.Utils
             }
 
             htmlBuilder.Append("</body></html>");
-            return Encoding.UTF8.GetBytes(htmlBuilder.ToString());
+            return htmlBuilder.ToString();
         }
         public void Respond(params object[] args)
         {
-            byte[] buffer = BuildHTML(args);
-            Context.Response.ContentLength64 = buffer.Length;
-            Context.Response.ContentType = "text/html";
-            Context.Response.OutputStream.Write(buffer, 0, buffer.Length);
-            Context.Response.OutputStream.Close();
+            byte[] buffer = Encoding.UTF8.GetBytes(BuildHTML(args));
+            context.Response.ContentLength64 = buffer.Length;
+            context.Response.ContentType = "text/html";
+            context.Response.OutputStream.Write(buffer, 0, buffer.Length);
+            context.Response.OutputStream.Close();
         }
         private bool tryHandleRequest(IAsyncResult result)
         {
             try
             {
-                var request = Listener.EndGetContext(result).Request;
+                var context = listener.EndGetContext(result);
+                var request = context.Request;
+                this.context = context;
+
                 if (request.Url == null) return false;
                 var handlers = getHandlers[request.HttpMethod];
-                if (handlers != null && handlers.TryGetValue(request.Url.AbsolutePath, out var handler) && handler != null && handler(request)) return true;
+
+                if (handlers != null && handlers.TryGetValue(request.Url.AbsolutePath, out var handler) && handler != null)
+                {
+                    return handler(request);
+                }
             }
             catch (Exception ex)
             {
-                Logger.Log("Error in tryHandleRequest: " + ex.Message, LoggingTarget.Information, LogLevel.Error);
+                Console.WriteLine("tryHandleRequest: " + ex.Message);
             }
+
             return false;
         }
         private void handleRequest(IAsyncResult result)
         {
+            if (!listener.IsListening) return;
+
             if (!tryHandleRequest(result))
             {
                 Respond(
                     "h1", "Invalid request"
                 );
             }
-            Context.Response.Close();
-            beginListening();
-        }
-        private void beginListening()
-        {
-            Listener.BeginGetContext(new AsyncCallback(handleRequest), Listener);
+
+            receive();
         }
     }
 }

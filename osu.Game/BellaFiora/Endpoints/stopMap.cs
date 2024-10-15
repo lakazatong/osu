@@ -2,18 +2,18 @@
 
 using System;
 using System.Net;
+using osu.Game.BellaFiora.Utils;
 
 namespace osu.Game.BellaFiora.Endpoints
 {
     public class stopMapEndpoint : Endpoint<BellaFioraServer>
     {
         public stopMapEndpoint(BellaFioraServer server) : base(server) { }
-        public override Func<HttpListenerRequest, bool> GetHandler() => handler;
-        private bool handler(HttpListenerRequest request)
+        public override Func<HttpListenerRequest, bool> Handler => request =>
         {
             callback();
             return true;
-        }
+        };
         private void callback()
         {
             Server.UpdateThread.Post(_ =>

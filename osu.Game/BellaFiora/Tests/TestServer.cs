@@ -8,7 +8,7 @@ namespace osu.Game.BellaFiora.Tests
     {
         public TestServer() : base()
         {
-            AddGET("/test", new testEndpoint(this).GetHandler());
+            AddGET("/test", new testEndpoint(this).Handler);
         }
     }
 }

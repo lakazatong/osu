@@ -9,7 +9,7 @@
             "command": "dotnet",
             "args": [
                 "build",
-                "osu.Game/BellaFiora/Tests",
+                "${workspaceFolder}/osu.Game/BellaFiora/Tests/osu.Game.BellaFiora.Tests.csproj",
                 "-p:GenerateFullPaths=true",
                 "-m",
                 "-verbosity:m"
