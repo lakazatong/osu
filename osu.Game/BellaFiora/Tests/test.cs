@@ -2,6 +2,7 @@
 
 using System;
 using System.Net;
+using osu.Game.BellaFiora.Utils;
 
 namespace osu.Game.BellaFiora.Tests
 {

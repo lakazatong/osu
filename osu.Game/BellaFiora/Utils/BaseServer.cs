@@ -6,7 +6,7 @@ using System.Net;
 using System.Text;
 using osu.Framework.Logging;
 
-namespace osu.Game.BellaFiora
+namespace osu.Game.BellaFiora.Utils
 {
     public class BaseServer
     {

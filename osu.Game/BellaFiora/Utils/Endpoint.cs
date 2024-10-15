@@ -3,7 +3,7 @@
 using System;
 using System.Net;
 
-namespace osu.Game.BellaFiora
+namespace osu.Game.BellaFiora.Utils
 {
     public abstract class Endpoint<T>
         where T : BaseServer

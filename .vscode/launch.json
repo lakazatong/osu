@@ -2,6 +2,18 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "BellaFiora (Tests, Debug)",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "dotnet",
+            "args": [
+                "${workspaceRoot}/osu.Game.BellaFiora.Tests/bin/Debug/net8.0/osu.Game.BellaFiora.Tests.dll"
+            ],
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": "Build BellaFiora (Tests, Debug)",
+            "console": "internalConsole"
+        },
+        {
             "name": "osu! (Debug)",
             "type": "coreclr",
             "request": "launch",

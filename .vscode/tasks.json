@@ -4,6 +4,20 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "Build BellaFiora (Tests, Debug)",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "build",
+                "osu.Game/BellaFiora/Tests",
+                "-p:GenerateFullPaths=true",
+                "-m",
+                "-verbosity:m"
+            ],
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "Build osu! (Debug)",
             "type": "shell",
             "command": "dotnet",

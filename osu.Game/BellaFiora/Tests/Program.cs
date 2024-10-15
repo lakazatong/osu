@@ -1,9 +1,8 @@
 #pragma warning disable IDE0073
 
 using System;
-using osu.Game.BellaFiora.Tests;
 
-namespace osu.Game.BellaFiora
+namespace osu.Game.BellaFiora.Tests
 {
     public static class Program
     {
