@@ -11,6 +11,7 @@ using osu.Framework.Logging;
 using osu.Framework.Timing;
 using osu.Game.Beatmaps;
 using osu.Game.Beatmaps.ControlPoints;
+using osu.Game.BellaFiora;
 using osu.Game.Overlays;
 
 namespace osu.Game.Screens.Play
@@ -32,10 +33,10 @@ namespace osu.Game.Screens.Play
         /// </summary>
         public const double MINIMUM_SKIP_TIME = 1000;
 
-        public readonly BindableNumber<double> UserPlaybackRate = new BindableDouble(1)
+        public readonly BindableNumber<double> UserPlaybackRate = new BindableDouble(Math.Max(0.05, Globals.GAMEPLAY_PLAYBACK_RATE))
         {
             MinValue = 0.05,
-            MaxValue = 2,
+            MaxValue = Math.Max(0.05, Globals.GAMEPLAY_PLAYBACK_RATE),
             Precision = 0.01,
         };
 

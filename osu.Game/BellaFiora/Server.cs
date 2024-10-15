@@ -23,7 +23,7 @@ namespace osu.Game.BellaFiora
 
         public Dictionary<string, ModPanel> ModPanels = new Dictionary<string, ModPanel>();
         public ModPanel AutoPanel = null!;
-        public SoloPlayer? Player = null;
+        public ReplayPlayer? Player = null;
         public HotkeyExitOverlay? HotkeyExitOverlay = null;
         public OsuConfigManager OsuConfigManager = null!;
         public FrameworkConfigManager FrameworkConfigManager = null!;
