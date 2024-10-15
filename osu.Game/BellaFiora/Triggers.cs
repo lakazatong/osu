@@ -2,6 +2,7 @@
 
 // using osu.Framework.Logging;
 using System.Threading;
+using osu.Framework.Configuration;
 using osu.Game.Configuration;
 using osu.Game.Overlays.Mods;
 using osu.Game.Screens.Play;
@@ -16,12 +17,13 @@ namespace osu.Game.BellaFiora
         private static SkinManager skinManager = null!;
         private static Skin[] defaultSkins = null!;
         private static bool footerButtonModsLoadCompleteTrigged = false;
-        private static OsuConfigManager localConfig = null!;
+        private static OsuConfigManager osuConfigManager = null!;
+        private static FrameworkConfigManager frameworkConfigManager = null!;
         public static void CarouselBeatmapsTrulyLoaded(SongSelect songSelect)
         {
             if (server == null && SynchronizationContext.Current != null)
             {
-                server = new BellaFioraServer(SynchronizationContext.Current, songSelect, skinManager, defaultSkins, localConfig);
+                server = new BellaFioraServer(SynchronizationContext.Current, songSelect, skinManager, defaultSkins, osuConfigManager, frameworkConfigManager);
                 server.Start();
             }
         }
@@ -52,9 +54,10 @@ namespace osu.Game.BellaFiora
                 defaultSkins = ds;
             }
         }
-        public static void LocalConfigCreated(OsuConfigManager lc)
+        public static void LocalConfigLoaded(OsuConfigManager lc, FrameworkConfigManager fcm)
         {
-            localConfig = lc;
+            osuConfigManager = lc;
+            frameworkConfigManager = fcm;
         }
     }
 }

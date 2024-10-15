@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Threading;
+using osu.Framework.Configuration;
 using osu.Game.BellaFiora.Endpoints;
 using osu.Game.BellaFiora.Utils;
 using osu.Game.Configuration;
@@ -24,20 +25,23 @@ namespace osu.Game.BellaFiora
         public ModPanel AutoPanel = null!;
         public SoloPlayer? Player = null;
         public HotkeyExitOverlay? HotkeyExitOverlay = null;
-        public OsuConfigManager LocalConfig = null!;
+        public OsuConfigManager OsuConfigManager = null!;
+        public FrameworkConfigManager FrameworkConfigManager = null!;
         public BellaFioraServer(
             SynchronizationContext syncContext,
             SongSelect songSelect,
             SkinManager skinManager,
             Skin[] defaultSkins,
-            OsuConfigManager localConfig
+            OsuConfigManager osuConfigManager,
+            FrameworkConfigManager frameworkConfigManager
         ) : base()
         {
             UpdateThread = syncContext;
             SongSelect = songSelect;
             SkinManager = skinManager;
             DefaultSkins = defaultSkins;
-            LocalConfig = localConfig;
+            OsuConfigManager = osuConfigManager;
+            FrameworkConfigManager = frameworkConfigManager;
             AddGET("/loadConfig", new loadConfigEndpoint(this).Handler);
             AddGET("/saveConfig", new saveConfigEndpoint(this).Handler);
             AddGET("/startMap", new startMapEndpoint(this).Handler);

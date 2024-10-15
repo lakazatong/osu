@@ -19,7 +19,9 @@ namespace osu.Game.BellaFiora.Endpoints
             Server.UpdateThread.Post(_ =>
             {
                 // LocalConfig.Load(config);
-                Server.LocalConfig.Load();
+                Server.OsuConfigManager.Load();
+                // Server.FrameworkConfigManager.Load("");
+                Server.FrameworkConfigManager.Load();
                 Respond(
                     "h1", "Received loadConfig request",
                     "p", $"Config: {config}",

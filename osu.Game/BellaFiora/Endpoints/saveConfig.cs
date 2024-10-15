@@ -18,10 +18,10 @@ namespace osu.Game.BellaFiora.Endpoints
         {
             Server.UpdateThread.Post(_ =>
             {
-                bool saved = Server.LocalConfig.Save();
                 Respond(
                     "h1", "Received saveConfig request",
-                    "p", $"Saved: {saved}"
+                    "p", $"OsuConfigManager Saved: {Server.OsuConfigManager.Save()}",
+                    "p", $"FrameworkConfigManager Saved: {Server.FrameworkConfigManager.Save()}"
                 );
             }, null);
         }
