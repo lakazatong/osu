@@ -11,6 +11,7 @@ using osu.Game.Graphics.Containers;
 using osu.Game.Graphics.Cursor;
 using osu.Game.Overlays.Login;
 using osu.Game.Overlays.Settings;
+using osu.Game.BellaFiora;
 
 namespace osu.Game.Overlays
 {
@@ -88,6 +89,11 @@ namespace osu.Game.Overlays
             panel.Bounding = false;
             this.FadeOut(transition_time);
             FadeEdgeEffectTo(0, WaveContainer.DISAPPEAR_DURATION, Easing.In);
+        }
+
+        public override void Show()
+        {
+            if (Globals.LOGIN) base.Show();
         }
     }
 }

@@ -16,6 +16,8 @@ using osu.Framework.Threading;
 using osu.Game.Configuration;
 using osu.Game.Graphics.UserInterface;
 using IntroSequence = osu.Game.Configuration.IntroSequence;
+using osu.Game.BellaFiora;
+using osu.Game.Screens.Select;
 
 namespace osu.Game.Screens
 {
@@ -33,7 +35,7 @@ namespace osu.Game.Screens
         private LoadingSpinner spinner;
         private ScheduledDelegate spinnerShow;
 
-        protected virtual OsuScreen CreateLoadableScreen() => getIntroSequence();
+        protected virtual OsuScreen CreateLoadableScreen() => Globals.SKIP_MAIN_MENU ? new PlaySongSelect() : getIntroSequence();
 
         private IntroScreen getIntroSequence()
         {

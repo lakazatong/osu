@@ -100,6 +100,7 @@ namespace osu.Game.BellaFiora.Endpoints
 
                 Respond(
                     "h1", "Received recordMap request",
+                    "p", $"Started: {started}",
                     "p", $"Beatmap ID: {beatmapId}",
                     "p", $"Skin: {skin}",
                     "p", "Requested Mods:",

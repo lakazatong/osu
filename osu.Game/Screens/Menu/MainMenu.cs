@@ -243,7 +243,6 @@ namespace osu.Game.Screens.Menu
                     Beatmap.Value.PrepareTrackForPreview(false);
                     track.Restart();
                 }
-                if (Globals.SKIP_MAIN_MENU) loadSoloSongSelect();
             }
 
             if (storage is OsuStorage osuStorage && osuStorage.Error != OsuStorageError.None)

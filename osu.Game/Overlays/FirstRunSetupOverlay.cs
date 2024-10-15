@@ -16,6 +16,7 @@ using osu.Framework.Input.Events;
 using osu.Framework.Localisation;
 using osu.Framework.Screens;
 using osu.Framework.Threading;
+using osu.Game.BellaFiora;
 using osu.Game.Configuration;
 using osu.Game.Database;
 using osu.Game.Graphics;
@@ -196,6 +197,7 @@ namespace osu.Game.Overlays
 
         public override void Show()
         {
+            if (!Globals.FIRST_RUN_SETUP) return;
             // if we are valid for display, only do so after reaching the main menu.
             performer.PerformFromScreen(screen =>
             {
