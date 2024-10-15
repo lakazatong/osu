@@ -33,7 +33,7 @@ namespace osu.Game.Screens.Play
         /// </summary>
         public const double MINIMUM_SKIP_TIME = 1000;
 
-        public readonly BindableNumber<double> UserPlaybackRate = new BindableDouble(Math.Max(0.05, Globals.GAMEPLAY_PLAYBACK_RATE))
+        public readonly BindableNumber<double> UserPlaybackRate = new BindableDouble(1)
         {
             MinValue = 0.05,
             MaxValue = Math.Max(0.05, Globals.GAMEPLAY_PLAYBACK_RATE),
