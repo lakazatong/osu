@@ -24,7 +24,7 @@ namespace osu.Game.BellaFiora.Endpoints
             string? skinStr = QueryString["skin"];
 
             if (int.TryParse(beatmapIdStr, out int beatmapId) &&
-                !string.IsNullOrEmpty(modsStr) &&
+                modsStr != null &&
                 int.TryParse(skinStr, out int skin))
             {
                 callback(beatmapId, modsStr, skin);
