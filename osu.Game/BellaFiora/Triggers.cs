@@ -6,6 +6,7 @@ using osu.Framework.Configuration;
 using osu.Game.Configuration;
 using osu.Game.Overlays.Mods;
 using osu.Game.Screens.Play;
+using osu.Game.Screens.Play.PlayerSettings;
 using osu.Game.Screens.Select;
 using osu.Game.Skinning;
 
@@ -58,6 +59,11 @@ namespace osu.Game.BellaFiora
         {
             osuConfigManager = lc;
             frameworkConfigManager = fcm;
+        }
+
+        public static void ReplayPlayerLoaded(PlaybackSettings playbackSettings)
+        {
+            playbackSettings.UserPlaybackRate.Value = Globals.GAMEPLAY_PLAYBACK_RATE;
         }
     }
 }

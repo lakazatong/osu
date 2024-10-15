@@ -12,6 +12,7 @@ using osu.Framework.Bindables;
 using osu.Framework.Input.Bindings;
 using osu.Framework.Input.Events;
 using osu.Game.Beatmaps;
+using osu.Game.BellaFiora;
 using osu.Game.Configuration;
 using osu.Game.Input.Bindings;
 using osu.Game.Rulesets.Mods;
@@ -81,6 +82,8 @@ namespace osu.Game.Screens.Play
                 playbackSettings.UserPlaybackRate.BindTo(master.UserPlaybackRate);
 
             HUDOverlay.PlayerSettingsOverlay.AddAtStart(playbackSettings);
+
+            Triggers.ReplayPlayerLoaded(playbackSettings);
         }
 
         protected override void PrepareReplay()
