@@ -8,6 +8,6 @@ namespace osu.Game.BellaFiora
         public static readonly bool CAN_PAUSE = false;
         public static readonly bool LOGIN = false;
         public static readonly bool FIRST_RUN_SETUP = false;
-        public static readonly float GAMEPLAY_PLAYBACK_RATE = 10;
+        public static readonly float GAMEPLAY_PLAYBACK_RATE = 1;
     }
 }

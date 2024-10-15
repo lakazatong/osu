@@ -31,13 +31,13 @@ namespace osu.Game.Screens.Play
         /// <summary>
         /// Duration before gameplay start time required before skip button displays.
         /// </summary>
-        public const double MINIMUM_SKIP_TIME = 1000;
+        public const double MINIMUM_SKIP_TIME = 0;
 
         public readonly BindableNumber<double> UserPlaybackRate = new BindableDouble(1)
         {
-            MinValue = 0.05,
-            MaxValue = Math.Max(0.05, Globals.GAMEPLAY_PLAYBACK_RATE),
-            Precision = 0.01,
+            MinValue = 1,
+            MaxValue = Math.Max(1, Globals.GAMEPLAY_PLAYBACK_RATE),
+            Precision = 1,
         };
 
         /// <summary>
