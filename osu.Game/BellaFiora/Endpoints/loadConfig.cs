@@ -11,22 +11,24 @@ namespace osu.Game.BellaFiora.Endpoints
         public loadConfigEndpoint(Server server) : base(server) { }
         public override Func<HttpListenerRequest, bool> Handler => request =>
         {
-            callback("");
+            callback("", "");
             return true;
         };
-        private void callback(string config)
+        private void callback(string osuConfig, string frameworkConfig)
         {
             Server.UpdateThread.Post(_ =>
             {
-                // LocalConfig.Load(config);
-                Server.OsuConfigManager.Load();
-                // Server.FrameworkConfigManager.Load("");
-                Server.FrameworkConfigManager.Load();
+                Server.OsuConfigManager.Load("a");
+                Server.FrameworkConfigManager.Load("b");
                 Respond(
                     "h1", "Received loadConfig request",
-                    "p", $"Config: {config}",
+                    "p", $"OsuConfig: {osuConfig}",
                     "ul",
-                        config.Split("\n"),
+                        osuConfig.Split("\n"),
+                        Formatters.UnitFormatter,
+                    "p", $"FrameworkConfig: {frameworkConfig}",
+                    "ul",
+                        frameworkConfig.Split("\n"),
                         Formatters.UnitFormatter
                 );
             }, null);
