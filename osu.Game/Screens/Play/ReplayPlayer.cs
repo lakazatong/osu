@@ -79,7 +79,10 @@ namespace osu.Game.Screens.Play
             };
 
             if (GameplayClockContainer is MasterGameplayClockContainer master)
+            {
                 playbackSettings.UserPlaybackRate.BindTo(master.UserPlaybackRate);
+                master.UserPlaybackRate.Value = Globals.GAMEPLAY_PLAYBACK_RATE;
+            }
 
             HUDOverlay.PlayerSettingsOverlay.AddAtStart(playbackSettings);
         }
