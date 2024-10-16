@@ -14,6 +14,7 @@ using osu.Framework.Lists;
 using osu.Game.Beatmaps;
 using osu.Game.Beatmaps.ControlPoints;
 using osu.Game.Beatmaps.Timing;
+using osu.Framework.BellaFiora;
 using osu.Game.Rulesets.Difficulty.Preprocessing;
 using osu.Game.Rulesets.Difficulty.Skills;
 using osu.Game.Rulesets.Mods;
@@ -120,7 +121,7 @@ namespace osu.Game.Rulesets.Difficulty
                 {
                     foreach (var skill in skills)
                     {
-                        cancellationToken.ThrowIfCancellationRequested();
+                        if (Globals.THROW_IF_CANCELLED) cancellationToken.ThrowIfCancellationRequested();
                         skill.Process(difficultyObjects[currentIndex]);
                     }
 

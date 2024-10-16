@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ManagedBass.Fx;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
+using osu.Game.BellaFiora;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -43,7 +44,7 @@ namespace osu.Game.Screens.Play
 
         protected const double CONTENT_OUT_DURATION = 300;
 
-        protected virtual double PlayerPushDelay => 1800 + disclaimers.Count * 500;
+        protected virtual double PlayerPushDelay => Globals.NO_PLAYER_PUSH_DELAY ? 0 : 1800 + disclaimers.Count * 500;
 
         public override bool HideOverlaysOnEnter => hideOverlays;
 
@@ -228,7 +229,7 @@ namespace osu.Game.Screens.Play
                 sampleRestart = new SkinnableSound(new SampleInfo(@"Gameplay/restart", @"pause-retry-click"))
             };
 
-            if (Beatmap.Value.BeatmapInfo.EpilepsyWarning)
+            if (Globals.EPILEPSY_WARNING && Beatmap.Value.BeatmapInfo.EpilepsyWarning)
             {
                 disclaimers.Add(epilepsyWarning = new PlayerLoaderDisclaimer(PlayerLoaderStrings.EpilepsyWarningTitle, PlayerLoaderStrings.EpilepsyWarningContent));
             }
