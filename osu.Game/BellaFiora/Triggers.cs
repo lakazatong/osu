@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using osu.Framework.Configuration;
+using osu.Game.Beatmaps;
 using osu.Game.Configuration;
 using osu.Game.Overlays.Mods;
 using osu.Game.Screens.Play;
@@ -22,14 +23,27 @@ namespace osu.Game.BellaFiora
         private static FrameworkConfigManager frameworkConfigManager = null!;
         private static Dictionary<string, ModPanel> modPanels = new Dictionary<string, ModPanel>();
         private static ModPanel autoPanel = null!;
+        private static ModPanel hdPanel = null!;
+        private static ModPanel hrPanel = null!;
+        private static ModPanel dtPanel = null!;
+        private static BeatmapDifficultyCache beatmapDifficultyCache = null!;
         public static void CarouselBeatmapsTrulyLoaded(SongSelect songSelect)
         {
             if (server == null && SynchronizationContext.Current != null)
             {
-                server = new Server(SynchronizationContext.Current, songSelect, skinManager, defaultSkins, osuConfigManager, frameworkConfigManager)
+                server = new Server(SynchronizationContext.Current)
                 {
+                    SongSelect = songSelect,
+                    SkinManager = skinManager,
+                    DefaultSkins = defaultSkins,
+                    OsuConfigManager = osuConfigManager,
+                    FrameworkConfigManager = frameworkConfigManager,
                     ModPanels = modPanels,
-                    AutoPanel = autoPanel
+                    AutoPanel = autoPanel,
+                    HDPanel = hdPanel,
+                    HRPanel = hrPanel,
+                    DTPanel = dtPanel,
+                    BeatmapDifficultyCache = beatmapDifficultyCache
                 };
                 server.Start();
             }
@@ -40,6 +54,9 @@ namespace osu.Game.BellaFiora
             {
                 if (!modPanels.ContainsKey(panel.Mod.Acronym)) modPanels.Add(panel.Mod.Acronym, panel);
                 if (autoPanel == null && panel.Mod.Acronym == "AT") autoPanel = panel;
+                else if (hdPanel == null && panel.Mod.Acronym == "HD") hdPanel = panel;
+                else if (hrPanel == null && panel.Mod.Acronym == "HR") hrPanel = panel;
+                else if (dtPanel == null && panel.Mod.Acronym == "DT") dtPanel = panel;
             }
             else
             {
@@ -73,6 +90,10 @@ namespace osu.Game.BellaFiora
         {
             osuConfigManager = lc;
             frameworkConfigManager = fcm;
+        }
+        public static void BeatmapDifficultyCacheCreated(BeatmapDifficultyCache bdc)
+        {
+            beatmapDifficultyCache = bdc;
         }
     }
 }

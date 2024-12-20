@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.Threading;
+using osu.Framework.BellaFiora;
 using osu.Game.Audio;
 using osu.Game.Rulesets.Judgements;
 using osu.Game.Rulesets.Objects.Types;
@@ -37,7 +38,7 @@ namespace osu.Game.Rulesets.Catch.Objects
 
             for (float time = startTime; time <= endTime; time += spacing)
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                if (Globals.THROW_IF_CANCELLED) cancellationToken.ThrowIfCancellationRequested();
 
                 AddNested(new Banana
                 {

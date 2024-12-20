@@ -10,6 +10,7 @@ using System.Threading;
 using JetBrains.Annotations;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
+using osu.Framework.BellaFiora;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -223,11 +224,11 @@ namespace osu.Game.Rulesets.UI
         {
             foreach (TObject h in Beatmap.HitObjects)
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                if (Globals.THROW_IF_CANCELLED) cancellationToken.ThrowIfCancellationRequested();
                 AddHitObject(h);
             }
 
-            cancellationToken.ThrowIfCancellationRequested();
+            if (Globals.THROW_IF_CANCELLED) cancellationToken.ThrowIfCancellationRequested();
 
             Playfield.PostProcess();
 

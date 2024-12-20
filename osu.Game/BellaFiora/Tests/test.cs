@@ -16,15 +16,8 @@ namespace osu.Game.BellaFiora.Tests
         };
         private void callback()
         {
-            Respond(
-                "h1", "Received recordMap request",
-                "p", $"Beatmap ID: {0}",
-                "p", $"Skin: {0}",
-                "p", "Requested Mods:",
-                "ul",
-                    "RX+DT+HD".Split('+'),
-                    Formatters.UnitFormatter,
-                "p", "Do not have this beatmap"
+            Server.RespondHTML(
+                "h1", "Received test request"
             );
         }
     }

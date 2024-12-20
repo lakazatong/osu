@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using osu.Framework.BellaFiora;
 using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osu.Game.Extensions;
@@ -49,7 +50,7 @@ namespace osu.Game.Database
 
                 foreach (var file in model.Files)
                 {
-                    cancellationToken.ThrowIfCancellationRequested();
+                    if (Globals.THROW_IF_CANCELLED) cancellationToken.ThrowIfCancellationRequested();
 
                     using (var stream = GetFileContents(model, file))
                     {

@@ -63,7 +63,7 @@ namespace osu.Game.Rulesets.Difficulty
         /// <returns>A structure describing the difficulty of the beatmap.</returns>
         public DifficultyAttributes Calculate([NotNull] IEnumerable<Mod> mods, CancellationToken cancellationToken = default)
         {
-            cancellationToken.ThrowIfCancellationRequested();
+            if (Globals.THROW_IF_CANCELLED) cancellationToken.ThrowIfCancellationRequested();
             preProcess(mods, cancellationToken);
 
             var skills = CreateSkills(Beatmap, playableMods, clockRate);
@@ -75,7 +75,7 @@ namespace osu.Game.Rulesets.Difficulty
             {
                 foreach (var skill in skills)
                 {
-                    cancellationToken.ThrowIfCancellationRequested();
+                    if (Globals.THROW_IF_CANCELLED) cancellationToken.ThrowIfCancellationRequested();
                     skill.Process(hitObject);
                 }
             }
@@ -99,7 +99,7 @@ namespace osu.Game.Rulesets.Difficulty
         /// <returns>The set of <see cref="TimedDifficultyAttributes"/>.</returns>
         public List<TimedDifficultyAttributes> CalculateTimed([NotNull] IEnumerable<Mod> mods, CancellationToken cancellationToken = default)
         {
-            cancellationToken.ThrowIfCancellationRequested();
+            if (Globals.THROW_IF_CANCELLED) cancellationToken.ThrowIfCancellationRequested();
             preProcess(mods, cancellationToken);
 
             var attribs = new List<TimedDifficultyAttributes>();

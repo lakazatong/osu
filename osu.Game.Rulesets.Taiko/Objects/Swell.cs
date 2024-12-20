@@ -6,6 +6,7 @@ using osu.Game.Rulesets.Objects.Types;
 using osu.Game.Rulesets.Judgements;
 using osu.Game.Rulesets.Scoring;
 using osu.Game.Rulesets.Taiko.Judgements;
+using osu.Framework.BellaFiora;
 
 namespace osu.Game.Rulesets.Taiko.Objects
 {
@@ -30,7 +31,7 @@ namespace osu.Game.Rulesets.Taiko.Objects
 
             for (int i = 0; i < RequiredHits; i++)
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                if (Globals.THROW_IF_CANCELLED) cancellationToken.ThrowIfCancellationRequested();
                 AddNested(new SwellTick
                 {
                     StartTime = StartTime,

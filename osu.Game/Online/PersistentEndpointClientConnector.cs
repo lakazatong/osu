@@ -4,6 +4,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using osu.Framework.BellaFiora;
 using osu.Framework.Bindables;
 using osu.Framework.Extensions.TypeExtensions;
 using osu.Framework.Logging;
@@ -103,7 +104,7 @@ namespace osu.Game.Online
                     // if cancelled, we can be sure that a disconnect or reconnect is handled elsewhere.
                     var cancellationToken = connectCancelSource.Token;
 
-                    cancellationToken.ThrowIfCancellationRequested();
+                    if (Globals.THROW_IF_CANCELLED) cancellationToken.ThrowIfCancellationRequested();
 
                     Logger.Log($"{ClientName} connecting...", LoggingTarget.Network);
 
@@ -113,7 +114,7 @@ namespace osu.Game.Online
                         CurrentConnection = await BuildConnectionAsync(cancellationToken).ConfigureAwait(false);
                         CurrentConnection.Closed += ex => onConnectionClosed(ex, cancellationToken);
 
-                        cancellationToken.ThrowIfCancellationRequested();
+                        if (Globals.THROW_IF_CANCELLED) cancellationToken.ThrowIfCancellationRequested();
 
                         await CurrentConnection.ConnectAsync(cancellationToken).ConfigureAwait(false);
 

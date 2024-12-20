@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using osu.Framework.BellaFiora;
 using osu.Game.Audio;
 using osu.Game.Beatmaps;
 using osu.Game.Beatmaps.ControlPoints;
@@ -85,7 +86,7 @@ namespace osu.Game.Rulesets.Osu.Objects
 
             for (int i = 0; i < totalSpins; i++)
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                if (Globals.THROW_IF_CANCELLED) cancellationToken.ThrowIfCancellationRequested();
 
                 double startTime = StartTime + (float)(i + 1) / totalSpins * Duration;
 

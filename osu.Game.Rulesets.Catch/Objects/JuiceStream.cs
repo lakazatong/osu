@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Newtonsoft.Json;
+using osu.Framework.BellaFiora;
 using osu.Framework.Bindables;
 using osu.Game.Audio;
 using osu.Game.Beatmaps;
@@ -98,7 +99,7 @@ namespace osu.Game.Rulesets.Catch.Objects
 
                         for (double t = timeBetweenTiny; t < sinceLastTick; t += timeBetweenTiny)
                         {
-                            cancellationToken.ThrowIfCancellationRequested();
+                            if (Globals.THROW_IF_CANCELLED) cancellationToken.ThrowIfCancellationRequested();
 
                             AddNested(new TinyDroplet
                             {

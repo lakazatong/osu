@@ -13,7 +13,6 @@ namespace osu.Game.BellaFiora.Utils
         {
             Server = server;
         }
-        protected void Respond(params object[] args) => Server.Respond(args);
         public abstract Func<HttpListenerRequest, bool> Handler { get; }
     }
 }

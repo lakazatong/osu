@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using osu.Framework.BellaFiora;
 
 namespace osu.Game.Rulesets.Objects
 {
@@ -138,7 +139,7 @@ namespace osu.Game.Rulesets.Objects
         {
             for (double d = tickDistance; d <= length; d += tickDistance)
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                if (Globals.THROW_IF_CANCELLED) cancellationToken.ThrowIfCancellationRequested();
 
                 if (d >= length - minDistanceFromEnd)
                     break;

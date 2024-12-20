@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Humanizer;
+using osu.Framework.BellaFiora;
 using osu.Framework.Extensions;
 using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Logging;
@@ -214,7 +215,7 @@ namespace osu.Game.Database
         /// <returns>The imported model, if successful.</returns>
         public async Task<Live<TModel>?> Import(ImportTask task, ImportParameters parameters = default, CancellationToken cancellationToken = default)
         {
-            cancellationToken.ThrowIfCancellationRequested();
+            if (Globals.THROW_IF_CANCELLED) cancellationToken.ThrowIfCancellationRequested();
 
             Live<TModel>? import;
             using (ArchiveReader reader = task.GetReader())
@@ -248,7 +249,7 @@ namespace osu.Game.Database
         /// <param name="cancellationToken">An optional cancellation token.</param>
         private async Task<Live<TModel>?> importFromArchive(ArchiveReader archive, ImportParameters parameters = default, CancellationToken cancellationToken = default)
         {
-            cancellationToken.ThrowIfCancellationRequested();
+            if (Globals.THROW_IF_CANCELLED) cancellationToken.ThrowIfCancellationRequested();
 
             TModel? model = null;
 
@@ -584,11 +585,11 @@ namespace osu.Game.Database
 
             while (PauseImports)
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                if (Globals.THROW_IF_CANCELLED) cancellationToken.ThrowIfCancellationRequested();
                 Thread.Sleep(500);
             }
 
-            cancellationToken.ThrowIfCancellationRequested();
+            if (Globals.THROW_IF_CANCELLED) cancellationToken.ThrowIfCancellationRequested();
             Logger.Log($@"{GetType().Name} is being resumed.");
         }
 

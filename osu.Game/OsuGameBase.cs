@@ -63,6 +63,7 @@ using osu.Game.Scoring;
 using osu.Game.Skinning;
 using osu.Game.Utils;
 using RuntimeInfo = osu.Framework.RuntimeInfo;
+using Humanizer;
 
 namespace osu.Game
 {
@@ -311,7 +312,9 @@ namespace osu.Game
 
             var defaultBeatmap = new DummyWorkingBeatmap(Audio, Textures);
 
-            dependencies.Cache(difficultyCache = new BeatmapDifficultyCache());
+            difficultyCache = new();
+            Triggers.BeatmapDifficultyCacheCreated(difficultyCache);
+            dependencies.Cache(difficultyCache);
 
             // ordering is important here to ensure foreign keys rules are not broken in ModelStore.Cleanup()
             dependencies.Cache(ScoreManager = new ScoreManager(RulesetStore, () => BeatmapManager, Storage, realm, API, LocalConfig));

@@ -4,6 +4,7 @@
 #nullable disable
 
 using JetBrains.Annotations;
+using Newtonsoft.Json;
 using osu.Game.Rulesets.Objects;
 using osuTK;
 
@@ -71,5 +72,10 @@ namespace osu.Game.Rulesets.Scoring
         /// <param name="positionOffset">The positional offset.</param>
         /// <returns>The new <see cref="HitEvent"/>.</returns>
         public HitEvent With(Vector2? positionOffset) => new HitEvent(TimeOffset, GameplayRate, Result, HitObject, LastHitObject, positionOffset);
+
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
+        }
     }
 }

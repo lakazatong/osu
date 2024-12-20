@@ -39,7 +39,7 @@ namespace osu.Game.BellaFiora.Endpoints
                 CarouselBeatmap? carouselBeatmap = Server.SongSelect.GetCarouselBeatmap(beatmapId);
                 if (carouselBeatmap == null)
                 {
-                    Respond(
+                    Server.RespondHTML(
                         "h1", "Received recordMap request",
                         "p", $"Beatmap ID: {beatmapId}",
                         "p", $"Skin: {skin}",
@@ -92,7 +92,7 @@ namespace osu.Game.BellaFiora.Endpoints
 
                 bool started = Server.SongSelect.StartMap(beatmapId);
 
-                Respond(
+                Server.RespondHTML(
                     "h1", "Received recordMap request",
                     "p", $"Started: {started}",
                     "p", $"Beatmap ID: {beatmapId}",
@@ -100,15 +100,15 @@ namespace osu.Game.BellaFiora.Endpoints
                     "p", "Requested Mods:",
                     "ul",
                         modsStr.Split('+'),
-                        Formatters.UnitFormatter,
+                        BaseServer.UnitFormatter,
                     "p", "Selected Mods:",
                     "ul",
                         selectedModPanels,
-                        Formatters.FormatPanel,
+                        Server.FormatPanel,
                     "p", "All Mods:",
                     "ul",
                         Server.ModPanels.Values,
-                        Formatters.FormatPanel
+                        Server.FormatPanel
                 );
 
             }, null);

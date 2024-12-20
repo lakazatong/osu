@@ -20,16 +20,16 @@ namespace osu.Game.BellaFiora.Endpoints
             {
                 Server.OsuConfigManager.Load("a");
                 Server.FrameworkConfigManager.Load("b");
-                Respond(
+                Server.RespondHTML(
                     "h1", "Received loadConfig request",
                     "p", $"OsuConfig: {osuConfig}",
                     "ul",
                         osuConfig.Split("\n"),
-                        Formatters.UnitFormatter,
+                        BaseServer.UnitFormatter,
                     "p", $"FrameworkConfig: {frameworkConfig}",
                     "ul",
                         frameworkConfig.Split("\n"),
-                        Formatters.UnitFormatter
+                        BaseServer.UnitFormatter
                 );
             }, null);
         }

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using osu.Framework.BellaFiora;
 using osu.Framework.Extensions.ObjectExtensions;
 using osu.Game.Beatmaps;
 using osu.Game.Rulesets.Mods;
@@ -39,7 +40,7 @@ namespace osu.Game.Rulesets.Difficulty
             if (attributes?.Attributes == null || performanceCalculator == null)
                 return null;
 
-            cancellationToken.ThrowIfCancellationRequested();
+            if (Globals.THROW_IF_CANCELLED) cancellationToken.ThrowIfCancellationRequested();
 
             PerformanceAttributes[] performanceArray = await Task.WhenAll(
                 // compute actual performance

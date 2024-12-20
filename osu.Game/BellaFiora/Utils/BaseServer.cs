@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace osu.Game.BellaFiora.Utils
 {
@@ -88,11 +89,20 @@ namespace osu.Game.BellaFiora.Utils
             htmlBuilder.Append("</body></html>");
             return htmlBuilder.ToString();
         }
-        public void Respond(params object[] args)
+        public void RespondHTML(params object[] args)
         {
             byte[] buffer = Encoding.UTF8.GetBytes(BuildHTML(args));
             context.Response.ContentLength64 = buffer.Length;
             context.Response.ContentType = "text/html";
+            context.Response.OutputStream.Write(buffer, 0, buffer.Length);
+            context.Response.OutputStream.Close();
+        }
+        public void RespondJSON(object obj)
+        {
+            string jsonResponse = JsonConvert.SerializeObject(obj);
+            byte[] buffer = Encoding.UTF8.GetBytes(jsonResponse);
+            context.Response.ContentLength64 = buffer.Length;
+            context.Response.ContentType = "application/json";
             context.Response.OutputStream.Write(buffer, 0, buffer.Length);
             context.Response.OutputStream.Close();
         }
@@ -125,12 +135,13 @@ namespace osu.Game.BellaFiora.Utils
 
             if (!tryHandleRequest(result))
             {
-                Respond(
+                RespondHTML(
                     "h1", "Invalid request"
                 );
             }
 
             receive();
         }
+        public static Func<object, string?> UnitFormatter { get; } = o => o?.ToString();
     }
 }

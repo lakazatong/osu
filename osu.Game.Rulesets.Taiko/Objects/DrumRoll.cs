@@ -2,6 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 using System.Threading;
+using osu.Framework.BellaFiora;
 using osu.Game.Beatmaps;
 using osu.Game.Beatmaps.ControlPoints;
 using osu.Game.Rulesets.Judgements;
@@ -75,7 +76,7 @@ namespace osu.Game.Rulesets.Taiko.Objects
 
             for (double t = StartTime; t < EndTime + tickSpacing / 2; t += tickSpacing)
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                if (Globals.THROW_IF_CANCELLED) cancellationToken.ThrowIfCancellationRequested();
 
                 AddNested(new DrumRollTick(this)
                 {

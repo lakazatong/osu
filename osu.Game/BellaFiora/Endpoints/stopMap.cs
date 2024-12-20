@@ -19,7 +19,7 @@ namespace osu.Game.BellaFiora.Endpoints
             Server.UpdateThread.Post(_ =>
             {
                 Server.HotkeyExitOverlay?.Action.Invoke();
-                Respond(
+                Server.RespondHTML(
                     "h1", "Received stopMap request",
                     "p", "Map stopped"
                 );

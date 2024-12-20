@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using Newtonsoft.Json;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Extensions;
@@ -51,7 +52,7 @@ namespace osu.Game.Screens.Play
         /// <summary>
         /// The delay upon completion of the beatmap before displaying the results screen.
         /// </summary>
-        public readonly double RESULTS_DISPLAY_DELAY = Globals.NO_RESULTS_DISPLAY_DELAY ? 0.0 : 1000.0;
+        public readonly double RESULTS_DISPLAY_DELAY = Globals.RESULTS_DISPLAY_DELAY ? 1000.0 : 0.0;
 
         /// <summary>
         /// Raised after <see cref="StartGameplay"/> is called.
@@ -830,7 +831,10 @@ namespace osu.Game.Screens.Play
                     // This player instance may already be in the process of exiting.
                     return;
 
-                this.Push(CreateResults(prepareScoreForDisplayTask.GetResultSafely()));
+                ScoreInfo scoreInfo = prepareScoreForDisplayTask.GetResultSafely();
+                // File.WriteAllText("scoreInfo.json", scoreInfo.ToJson());
+
+                this.Push(CreateResults(scoreInfo));
             }, Time.Current + delay, 50);
 
             Scheduler.Add(resultsDisplayDelegate);

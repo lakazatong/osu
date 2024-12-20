@@ -392,5 +392,48 @@ namespace osu.Game.Scoring
         public bool Equals(ScoreInfo? other) => other?.ID == ID;
 
         public override string ToString() => this.GetDisplayTitle();
+
+        public string ToJson()
+        {
+            var jsonObject = new Dictionary<string, object?>
+            {
+                { "ID", ID.ToString() },
+                { "ClientVersion", ClientVersion },
+                { "BeatmapHash", BeatmapHash },
+                { "Hash", Hash },
+                { "DeletePending", DeletePending },
+                { "TotalScore", TotalScore },
+                { "TotalScoreWithoutMods", TotalScoreWithoutMods },
+                { "TotalScoreVersion", TotalScoreVersion },
+                { "LegacyTotalScore", LegacyTotalScore },
+                { "BackgroundReprocessingFailed", BackgroundReprocessingFailed },
+                { "MaxCombo", MaxCombo },
+                { "Accuracy", Accuracy },
+                { "HasOnlineReplay", HasOnlineReplay},
+                { "Date", Date },
+                { "PP", PP },
+                { "Ranked", Ranked },
+                { "OnlineID", OnlineID },
+                { "LegacyOnlineID", LegacyOnlineID },
+                { "ModsJson", ModsJson },
+                { "StatisticsJson", StatisticsJson },
+                { "MaximumStatisticsJson", MaximumStatisticsJson },
+                { "Rank", Rank },
+                { "RankInt", RankInt },
+                { "UserID", UserID },
+                { "RulesetID", RulesetID },
+                { "HitEvents", HitEvents.ToJson() },
+                { "Passed", Passed },
+                { "Combo", Combo },
+                { "Position", Position },
+                { "DisplayAccuracy", DisplayAccuracy },
+                { "IsLegacyScore", IsLegacyScore },
+                { "Statistics", Statistics },
+                { "MaximumStatistics", MaximumStatistics },
+            };
+
+            return JsonConvert.SerializeObject(jsonObject, Formatting.Indented);
+        }
+
     }
 }

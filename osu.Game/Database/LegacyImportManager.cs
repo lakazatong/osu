@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using osu.Framework;
 using osu.Framework.Allocation;
+using osu.Framework.BellaFiora;
 using osu.Framework.Graphics;
 using osu.Framework.Platform;
 using osu.Game.Beatmaps;
@@ -119,7 +120,7 @@ namespace osu.Game.Database
             if (stableStorage == null)
                 return 0;
 
-            cancellationToken.ThrowIfCancellationRequested();
+            if (Globals.THROW_IF_CANCELLED) cancellationToken.ThrowIfCancellationRequested();
 
             switch (content)
             {
