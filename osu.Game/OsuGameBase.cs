@@ -312,14 +312,14 @@ namespace osu.Game
 
             var defaultBeatmap = new DummyWorkingBeatmap(Audio, Textures);
 
-            difficultyCache = new();
+            dependencies.Cache(difficultyCache = new());
             Triggers.BeatmapDifficultyCacheCreated(difficultyCache);
-            dependencies.Cache(difficultyCache);
 
             // ordering is important here to ensure foreign keys rules are not broken in ModelStore.Cleanup()
             dependencies.Cache(ScoreManager = new ScoreManager(RulesetStore, () => BeatmapManager, Storage, realm, API, LocalConfig));
 
             dependencies.Cache(BeatmapManager = new BeatmapManager(Storage, realm, API, Audio, Resources, Host, defaultBeatmap, difficultyCache, performOnlineLookups: true));
+            Triggers.BeatmapManagerCreated(BeatmapManager);
 
             dependencies.Cache(BeatmapDownloader = new BeatmapModelDownloader(BeatmapManager, API));
             dependencies.Cache(ScoreDownloader = new ScoreModelDownloader(ScoreManager, API));

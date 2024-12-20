@@ -35,6 +35,7 @@ namespace osu.Game.BellaFiora
         public OsuConfigManager OsuConfigManager = null!;
         public BeatmapDifficultyCache BeatmapDifficultyCache = null!;
         public FrameworkConfigManager FrameworkConfigManager = null!;
+        public BeatmapManager BeatmapManager = null!;
         public Server(SynchronizationContext syncContext) : base()
         {
             UpdateThread = syncContext;

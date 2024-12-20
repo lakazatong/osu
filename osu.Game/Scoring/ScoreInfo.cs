@@ -422,7 +422,6 @@ namespace osu.Game.Scoring
                 { "RankInt", RankInt },
                 { "UserID", UserID },
                 { "RulesetID", RulesetID },
-                { "HitEvents", HitEvents.ToJson() },
                 { "Passed", Passed },
                 { "Combo", Combo },
                 { "Position", Position },

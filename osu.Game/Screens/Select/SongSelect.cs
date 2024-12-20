@@ -46,6 +46,7 @@ using osuTK.Graphics;
 using osuTK.Input;
 using osu.Game.BellaFiora;
 using osu.Game.Screens.Select.Carousel;
+using System.Threading.Tasks;
 
 namespace osu.Game.Screens.Select
 {
@@ -978,6 +979,8 @@ namespace osu.Game.Screens.Select
             FinaliseSelection();
             return true;
         }
+
+        public Task BeatmapSetAdded(BeatmapSetInfo beatmapSetInfo) => Carousel.BeatmapSetAdded(beatmapSetInfo);
 
         private void updateVisibleBeatmapCount()
         {

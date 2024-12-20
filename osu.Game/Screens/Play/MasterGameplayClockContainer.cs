@@ -35,9 +35,9 @@ namespace osu.Game.Screens.Play
 
         public readonly BindableNumber<double> UserPlaybackRate = new BindableDouble(1)
         {
-            MinValue = 1,
-            MaxValue = Math.Max(1, Globals.GAMEPLAY_PLAYBACK_RATE),
-            Precision = 1,
+            MinValue = Math.Clamp(Globals.GAMEPLAY_PLAYBACK_RATE, 0, 0.05),
+            MaxValue = Math.Max(1, 2 * Globals.GAMEPLAY_PLAYBACK_RATE),
+            Precision = 0.01,
         };
 
         /// <summary>

@@ -52,7 +52,7 @@ namespace osu.Game.Screens.Play
         /// <summary>
         /// The delay upon completion of the beatmap before displaying the results screen.
         /// </summary>
-        public readonly double RESULTS_DISPLAY_DELAY = Globals.RESULTS_DISPLAY_DELAY ? 1000.0 : 0.0;
+        public static readonly double RESULTS_DISPLAY_DELAY = Globals.RESULTS_DISPLAY_DELAY ? 1000.0 : 0.0;
 
         /// <summary>
         /// Raised after <see cref="StartGameplay"/> is called.

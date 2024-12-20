@@ -7,6 +7,7 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
@@ -30,7 +31,6 @@ using osu.Game.Screens.Select.Carousel;
 using osuTK;
 using osuTK.Input;
 using Realms;
-using osu.Game.BellaFiora;
 
 namespace osu.Game.Screens.Select
 {
@@ -319,6 +319,18 @@ namespace osu.Game.Screens.Select
             }
 
             Scheduler.AddOnce(processBeatmapChanges);
+        }
+
+        public Task BeatmapSetAdded(BeatmapSetInfo beatmapSetInfo)
+        {
+            beatmapSetsChanged(null, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, beatmapSetInfo));
+            return Task.Run(async () =>
+            {
+                while (Scheduler.HasPendingTasks)
+                {
+                    await Task.Delay(100).ConfigureAwait(false);
+                }
+            });
         }
 
         // All local operations must be scheduled.

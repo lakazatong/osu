@@ -27,6 +27,7 @@ namespace osu.Game.BellaFiora
         private static ModPanel hrPanel = null!;
         private static ModPanel dtPanel = null!;
         private static BeatmapDifficultyCache beatmapDifficultyCache = null!;
+        private static BeatmapManager beatmapManager = null!;
         public static void CarouselBeatmapsTrulyLoaded(SongSelect songSelect)
         {
             if (server == null && SynchronizationContext.Current != null)
@@ -43,7 +44,8 @@ namespace osu.Game.BellaFiora
                     HDPanel = hdPanel,
                     HRPanel = hrPanel,
                     DTPanel = dtPanel,
-                    BeatmapDifficultyCache = beatmapDifficultyCache
+                    BeatmapDifficultyCache = beatmapDifficultyCache,
+                    BeatmapManager = beatmapManager
                 };
                 server.Start();
             }
@@ -73,10 +75,11 @@ namespace osu.Game.BellaFiora
                 footerButtonModsLoadCompleteTrigged = true;
             }
         }
-        public static void PlayerLoaded(Player player, HotkeyExitOverlay hotkeyExitOverlay)
+        public static void PlayerLoaded(Player player, HotkeyExitOverlay? hotkeyExitOverlay)
         {
+            if (server == null) return;
             if (player is ReplayPlayer replayPlayer) server.Player = replayPlayer;
-            server.HotkeyExitOverlay = hotkeyExitOverlay;
+            if (hotkeyExitOverlay != null) server.HotkeyExitOverlay = hotkeyExitOverlay;
         }
         public static void SkinManagerCreated(SkinManager sm, Skin[] ds)
         {
@@ -94,6 +97,10 @@ namespace osu.Game.BellaFiora
         public static void BeatmapDifficultyCacheCreated(BeatmapDifficultyCache bdc)
         {
             beatmapDifficultyCache = bdc;
+        }
+        public static void BeatmapManagerCreated(BeatmapManager bm)
+        {
+            beatmapManager = bm;
         }
     }
 }
