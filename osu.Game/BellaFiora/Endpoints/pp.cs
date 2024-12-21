@@ -225,8 +225,9 @@ namespace osu.Game.BellaFiora.Endpoints
                     if (carouselBeatmap == null) return;
                 }
                 BeatmapInfo beatmapInfo = carouselBeatmap.BeatmapInfo;
-                // int endTimeObjectCount = beatmapInfo.EndTimeObjectCount;
-                int totalObjectCount = beatmapInfo.TotalObjectCount;
+                WorkingBeatmap workingBeatmap = Server.BeatmapManager.GetWorkingBeatmap(beatmapInfo);
+                int totalObjectCount = workingBeatmap.Beatmap.HitObjects.Count();
+                int maxCombo = workingBeatmap.Beatmap.GetMaxCombo();
                 RulesetInfo rulesetInfo = beatmapInfo.Ruleset;
                 ScoreInfo scoreInfo = new ScoreInfo(beatmapInfo, beatmapInfo.Ruleset)
                 {
@@ -272,6 +273,7 @@ namespace osu.Game.BellaFiora.Endpoints
                     {
                         scoreInfo.Accuracy = acc;
                         scoreInfo.Statistics = generateHitResults(totalObjectCount, acc, 0);
+                        scoreInfo.MaxCombo = maxCombo;
                         scoreInfo.Mods = mods;
                         PerformanceAttributes? attributes = performanceCalculator?.Calculate(scoreInfo, difficulty.Value.Attributes);
                         pps.Add(attributes?.Total ?? 0);
