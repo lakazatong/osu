@@ -272,6 +272,7 @@ namespace osu.Game.BellaFiora.Endpoints
                     {
                         scoreInfo.Accuracy = acc;
                         scoreInfo.Statistics = generateHitResults(totalObjectCount, acc, 0);
+                        scoreInfo.Mods = mods;
                         PerformanceAttributes? attributes = performanceCalculator?.Calculate(scoreInfo, difficulty.Value.Attributes);
                         pps.Add(attributes?.Total ?? 0);
                     }
