@@ -23,7 +23,11 @@
             ],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": "Build osu! (Debug)",
-            "console": "internalConsole"
+            "console": "internalConsole",
+            "justMyCode": false,
+            "symbolOptions": {
+                "searchMicrosoftSymbolServer": true
+            }
         },
         {
             "name": "osu! (Release)",

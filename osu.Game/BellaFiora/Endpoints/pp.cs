@@ -275,7 +275,7 @@ namespace osu.Game.BellaFiora.Endpoints
                         scoreInfo.Statistics = generateHitResults(totalObjectCount, acc, 0);
                         scoreInfo.MaxCombo = maxCombo;
                         scoreInfo.Mods = mods;
-                        PerformanceAttributes? attributes = performanceCalculator?.Calculate(scoreInfo, difficulty.Value.Attributes);
+                        PerformanceAttributes? attributes = performanceCalculator?.Calculate(scoreInfo, difficulty.Value.DifficultyAttributes ?? new DifficultyAttributes());
                         pps.Add(attributes?.Total ?? 0);
                     }
                     string modKey = string.Join("+", mods.Select(m => m?.Acronym ?? ""));
